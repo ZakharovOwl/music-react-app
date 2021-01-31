@@ -45,20 +45,12 @@ function App() {
   // END SONG (auto play next song when song ended)
   const songEndHandler = async () => {
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
-    let a;
-    if (currentIndex === 0) {
-      a = songs.length - 1;
-      await setCurrentSong(songs[a]);
-    } else {
-      a = currentIndex - 1;
-      await setCurrentSong(songs[a]);
-    }
-
-    if(isPlaying) audioRef.current.play()
+    await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+    if (isPlaying) audioRef.current.play();
   };
 
   return (
-    <div className={`App ${libraryStatus? 'app-active': ''}`}>
+    <div className={`App ${libraryStatus ? "app-active" : ""}`}>
       <Nav libraryStatus={libraryStatus} setLibraryStatus={setLibraryStatus} />
       <Song currentSong={currentSong} />
       <Player
